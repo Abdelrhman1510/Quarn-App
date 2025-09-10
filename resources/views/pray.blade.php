@@ -238,35 +238,51 @@
     }
 }
 
-        function renderPrayers() {
-            let html = '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">';
-            
-            prayers.forEach(p => {
-                const details = prayerDetails[p.name];
-                html += `
-                    <div class="prayer-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-islamic-100 overflow-hidden">
-                        <div class="bg-gradient-to-r ${details.color} px-6 py-4">
-                            <div class="text-center">
-                                <div class="text-3xl mb-2">${details.icon}</div>
-                                <h3 class="text-white font-bold text-lg font-amiri">${p.name}</h3>
-                            </div>
-                        </div>
-                        <div class="p-6">
-                            <div class="text-center mb-4">
-                                <div class="text-3xl font-bold text-islamic-700 mb-2">${p.time}</div>
-                                <div class="text-sm text-gray-600">${details.rakaat}</div>
-                            </div>
-                            <div class="text-xs text-gray-500 text-center">
-                                السنة: ${details.sunnah}
-                            </div>
-                        </div>
+       function renderPrayers() {
+    const city = localStorage.getItem("lastCity"); // 👈 نجيب المدينة لو متخزنة
+    let html = "";
+
+    // 👇 نضيف عنوان المدينة فوق المواقيت
+    if (city) {
+        html += `
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-islamic-700 font-amiri">
+                    مواقيت الصلاة في ${city}
+                </h2>
+                <div class="w-20 h-1 bg-gradient-to-r from-islamic-400 to-green-400 mx-auto rounded-full mt-2"></div>
+            </div>
+        `;
+    }
+
+    html += '<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">';
+    
+    prayers.forEach(p => {
+        const details = prayerDetails[p.name];
+        html += `
+            <div class="prayer-card bg-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-islamic-100 overflow-hidden">
+                <div class="bg-gradient-to-r ${details.color} px-6 py-4">
+                    <div class="text-center">
+                        <div class="text-3xl mb-2">${details.icon}</div>
+                        <h3 class="text-white font-bold text-lg font-amiri">${p.name}</h3>
                     </div>
-                `;
-            });
-            
-            html += '</div>';
-            document.getElementById("prayer-times").innerHTML = html;
-        }
+                </div>
+                <div class="p-6">
+                    <div class="text-center mb-4">
+                        <div class="text-3xl font-bold text-islamic-700 mb-2">${p.time}</div>
+                        <div class="text-sm text-gray-600">${details.rakaat}</div>
+                    </div>
+                    <div class="text-xs text-gray-500 text-center">
+                        السنة: ${details.sunnah}
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    document.getElementById("prayer-times").innerHTML = html;
+}
+
 
         function updateNextPrayer() {
             const now = new Date();
